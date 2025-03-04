@@ -1,0 +1,31 @@
+package layouts
+
+templ Sidebar() {
+	<div class="bg-gray-800 text-white w-64 py-6 px-4 flex flex-col">
+		<div class="text-2xl font-bold mb-8">Dashboard</div>
+		<nav class="flex-1">
+			<ul class="space-y-2">
+				<li>
+					<a href="/" class="flex items-center space-x-2 p-2 rounded hover:bg-gray-700">
+						<span>Overview</span>
+					</a>
+				</li>
+				<li>
+					<a href="/inventory" class="flex items-center space-x-2 p-2 rounded hover:bg-gray-700">
+						<span>Inventory</span>
+					</a>
+				</li>
+				<li>
+					<a href="/sales" class="flex items-center space-x-2 p-2 rounded hover:bg-gray-700">
+						<span>Sales</span>
+					</a>
+				</li>
+				<li>
+					<a href="/purchases" class="flex items-center space-x-2 p-2 rounded hover:bg-gray-700">
+						<span>Purchases</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+}

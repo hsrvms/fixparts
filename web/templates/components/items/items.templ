@@ -1,0 +1,16 @@
+package components
+
+templ ItemsList(items []string) {
+	<ul>
+		for _, item := range items {
+			<li
+				x-data="{ highlighted = false }"
+				@mouseenter="highlighted = true"
+				@mouseleave="highlighted = false"
+				:class="{ 'highlight': highlighted }"
+			>
+				{ item }
+			</li>
+		}
+	</ul>
+}

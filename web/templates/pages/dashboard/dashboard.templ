@@ -1,0 +1,147 @@
+package dashboardview
+
+templ Dashboard() {
+	<div class="space-y-6">
+		<!-- Key Metrics -->
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+			<div class="bg-white p-6 rounded-lg shadow">
+				<h2 class="text-lg font-semibold text-gray-600">Düşük Stok Ürünleri</h2>
+				<div class="mt-2">
+					<div class="text-3xl font-bold text-red-600" hx-get="/api/inventory/low-stock-count" hx-trigger="load">
+						<div class="animate-pulse h-8 bg-gray-200 rounded w-16"></div>
+					</div>
+					<div class="text-sm text-gray-500">Minimum Altında</div>
+				</div>
+			</div>
+			<div class="bg-white p-6 rounded-lg shadow">
+				<h2 class="text-lg font-semibold text-gray-600">Günlük Gelir</h2>
+				<div class="mt-2">
+					<div class="text-3xl font-bold text-green-600" hx-get="/api/sales/today" hx-trigger="load">
+						<div class="animate-pulse h-8 bg-gray-200 rounded w-24"></div>
+					</div>
+					<div class="text-sm text-gray-500">Satışlardan</div>
+				</div>
+			</div>
+			<div class="bg-white p-6 rounded-lg shadow">
+				<h2 class="text-lg font-semibold text-gray-600">Stokta Parçalar</h2>
+				<div class="mt-2">
+					<div class="text-3xl font-bold text-blue-600" hx-get="/api/inventory/total-count" hx-trigger="load">
+						<div class="animate-pulse h-8 bg-gray-200 rounded w-20"></div>
+					</div>
+					<div class="text-sm text-gray-500">Toplam Ürün</div>
+				</div>
+			</div>
+			<div class="bg-white p-6 rounded-lg shadow">
+				<h2 class="text-lg font-semibold text-gray-600">Araç Kapsamı</h2>
+				<div class="mt-2">
+					<div class="text-3xl font-bold text-purple-600" hx-get="/api/compatibility/vehicle-count" hx-trigger="load">
+						<div class="animate-pulse h-8 bg-gray-200 rounded w-16"></div>
+					</div>
+					<div class="text-sm text-gray-500">Uyumlu Modeller</div>
+				</div>
+			</div>
+		</div>
+		<!-- Low Stock & Recent Sales -->
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+			<div class="bg-white rounded-lg shadow">
+				<div class="p-6">
+					<h2 class="text-xl font-semibold mb-4">Düşük Stok Uyarıları</h2>
+					<div class="overflow-x-auto">
+						<table class="min-w-full" hx-get="/api/inventory/low-stock" hx-trigger="load every 5m">
+							<thead class="bg-gray-50">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Parça No</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">İsim</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Mevcut</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Minimum</th>
+								</tr>
+							</thead>
+							<tbody class="bg-white divide-y divide-gray-200">
+								<tr class="animate-pulse">
+									<td colspan="4" class="px-6 py-4">
+										<div class="h-4 bg-gray-200 rounded"></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow">
+				<div class="p-6">
+					<h2 class="text-xl font-semibold mb-4">Son Satışlar</h2>
+					<div class="overflow-x-auto">
+						<table class="min-w-full" hx-get="/api/sales/recent" hx-trigger="load every 30s">
+							<thead class="bg-gray-50">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tarih</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Parça</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Müşteri</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Toplam</th>
+								</tr>
+							</thead>
+							<tbody class="bg-white divide-y divide-gray-200">
+								<tr class="animate-pulse">
+									<td colspan="4" class="px-6 py-4">
+										<div class="h-4 bg-gray-200 rounded"></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Top Sellers & Recent Purchases -->
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+			<div class="bg-white rounded-lg shadow">
+				<div class="p-6">
+					<h2 class="text-xl font-semibold mb-4">En Çok Satan Parçalar</h2>
+					<div class="overflow-x-auto">
+						<table class="min-w-full" hx-get="/api/sales/top-sellers" hx-trigger="load">
+							<thead class="bg-gray-50">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Parça No</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">İsim</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Satılan</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Gelir</th>
+								</tr>
+							</thead>
+							<tbody class="bg-white divide-y divide-gray-200">
+								<tr class="animate-pulse">
+									<td colspan="4" class="px-6 py-4">
+										<div class="h-4 bg-gray-200 rounded"></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="bg-white rounded-lg shadow">
+				<div class="p-6">
+					<h2 class="text-xl font-semibold mb-4">Son Alımlar</h2>
+					<div class="overflow-x-auto">
+						<table class="min-w-full" hx-get="/api/purchases/recent" hx-trigger="load">
+							<thead class="bg-gray-50">
+								<tr>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tarih</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Parça No</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tedarikçi</th>
+									<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Maliyet</th>
+								</tr>
+							</thead>
+							<tbody class="bg-white divide-y divide-gray-200">
+								<tr class="animate-pulse">
+									<td colspan="4" class="px-6 py-4">
+										<div class="h-4 bg-gray-200 rounded"></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
