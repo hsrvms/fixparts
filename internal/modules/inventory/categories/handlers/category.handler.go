@@ -4,8 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/hsrvms/fixparts/internal/modules/inventory/models"
-	"github.com/hsrvms/fixparts/internal/modules/inventory/services"
+	categoryerrors "github.com/hsrvms/fixparts/internal/modules/inventory/categories/errors"
+	"github.com/hsrvms/fixparts/internal/modules/inventory/categories/models"
+	"github.com/hsrvms/fixparts/internal/modules/inventory/categories/services"
 	"github.com/labstack/echo/v4"
 )
 
@@ -73,7 +74,7 @@ func (h *CategoryHandler) CreateCategory(c echo.Context) error {
 	id, err := h.service.CreateCategory(ctx, category)
 	if err != nil {
 		switch err {
-		case services.ErrParentCategoryNotFound:
+		case categoryerrors.ErrParentCategoryNotFound:
 			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 		default:
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -101,9 +102,9 @@ func (h *CategoryHandler) UpdateCategory(c echo.Context) error {
 	err = h.service.UpdateCategory(ctx, category)
 	if err != nil {
 		switch err {
-		case services.ErrCategoryNotFound:
+		case categoryerrors.ErrCategoryNotFound:
 			return echo.NewHTTPError(http.StatusNotFound, err.Error())
-		case services.ErrParentCategoryNotFound, services.ErrCircularReference:
+		case categoryerrors.ErrParentCategoryNotFound, categoryerrors.ErrCircularReference:
 			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 		default:
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -123,9 +124,9 @@ func (h *CategoryHandler) DeleteCategory(c echo.Context) error {
 	err = h.service.DeleteCategory(ctx, id)
 	if err != nil {
 		switch err {
-		case services.ErrCategoryNotFound:
+		case categoryerrors.ErrCategoryNotFound:
 			return echo.NewHTTPError(http.StatusNotFound, err.Error())
-		case services.ErrCategoryHasSubcategories:
+		case categoryerrors.ErrCategoryHasSubcategories:
 			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 		default:
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())

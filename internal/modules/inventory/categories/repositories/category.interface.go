@@ -1,9 +1,9 @@
-package interfaces
+package repositories
 
 import (
 	"context"
 
-	"github.com/hsrvms/fixparts/internal/modules/inventory/models"
+	"github.com/hsrvms/fixparts/internal/modules/inventory/categories/models"
 )
 
 type CategoryRepository interface {

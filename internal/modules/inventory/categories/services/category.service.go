@@ -3,46 +3,31 @@ package services
 import (
 	"context"
 
-	"github.com/hsrvms/fixparts/internal/modules/inventory/models"
-	repositoryinterfaces "github.com/hsrvms/fixparts/internal/modules/inventory/repositories/interfaces"
+	categoryerrors "github.com/hsrvms/fixparts/internal/modules/inventory/categories/errors"
+	"github.com/hsrvms/fixparts/internal/modules/inventory/categories/models"
+	"github.com/hsrvms/fixparts/internal/modules/inventory/categories/repositories"
 )
 
-// CategoryService defines the interface for category business operations
-type CategoryService interface {
-	GetAllCategories(ctx context.Context) ([]*models.Category, error)
-	GetCategoryByID(ctx context.Context, id int) (*models.Category, error)
-	GetSubcategories(ctx context.Context, parentID int) ([]*models.Category, error)
-	CreateCategory(ctx context.Context, category *models.Category) (int, error)
-	UpdateCategory(ctx context.Context, category *models.Category) error
-	DeleteCategory(ctx context.Context, id int) error
-	GetCategoryTree(ctx context.Context) ([]*models.CategoryTreeNode, error)
-}
-
-// categoryService implements CategoryService
 type categoryService struct {
-	repo repositoryinterfaces.CategoryRepository
+	repo repositories.CategoryRepository
 }
 
-// NewCategoryService creates a new category service
-func NewCategoryService(repo repositoryinterfaces.CategoryRepository) CategoryService {
+func NewCategoryService(repo repositories.CategoryRepository) CategoryService {
 	return &categoryService{
 		repo: repo,
 	}
 }
 
-// GetAllCategories returns all categories
 func (s *categoryService) GetAllCategories(ctx context.Context) ([]*models.Category, error) {
 	return s.repo.GetAll(ctx)
 }
 
-// GetCategoryByID returns a category by its ID
 func (s *categoryService) GetCategoryByID(ctx context.Context, id int) (*models.Category, error) {
 	category, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	// If category exists, get its subcategories
 	if category != nil {
 		subcategories, err := s.repo.GetSubcategories(ctx, category.CategoryID)
 		if err != nil {
@@ -54,12 +39,10 @@ func (s *categoryService) GetCategoryByID(ctx context.Context, id int) (*models.
 	return category, nil
 }
 
-// GetSubcategories returns subcategories for a parent category
 func (s *categoryService) GetSubcategories(ctx context.Context, parentID int) ([]*models.Category, error) {
 	return s.repo.GetSubcategories(ctx, parentID)
 }
 
-// CreateCategory creates a new category
 func (s *categoryService) CreateCategory(ctx context.Context, category *models.Category) (int, error) {
 	// Add any business logic/validation here before calling repository
 
@@ -70,7 +53,7 @@ func (s *categoryService) CreateCategory(ctx context.Context, category *models.C
 			return 0, err
 		}
 		if parent == nil {
-			return 0, ErrParentCategoryNotFound
+			return 0, categoryerrors.ErrParentCategoryNotFound
 		}
 	}
 
@@ -85,7 +68,7 @@ func (s *categoryService) UpdateCategory(ctx context.Context, category *models.C
 		return err
 	}
 	if existingCategory == nil {
-		return ErrCategoryNotFound
+		return categoryerrors.ErrCategoryNotFound
 	}
 
 	// Check if parent category exists (if one is specified)
@@ -95,12 +78,12 @@ func (s *categoryService) UpdateCategory(ctx context.Context, category *models.C
 			return err
 		}
 		if parent == nil {
-			return ErrParentCategoryNotFound
+			return categoryerrors.ErrParentCategoryNotFound
 		}
 
 		// Prevent circular references
 		if *category.ParentCategoryID == category.CategoryID {
-			return ErrCircularReference
+			return categoryerrors.ErrCircularReference
 		}
 	}
 
@@ -115,7 +98,7 @@ func (s *categoryService) DeleteCategory(ctx context.Context, id int) error {
 		return err
 	}
 	if category == nil {
-		return ErrCategoryNotFound
+		return categoryerrors.ErrCategoryNotFound
 	}
 
 	// Check if category has subcategories
@@ -124,7 +107,7 @@ func (s *categoryService) DeleteCategory(ctx context.Context, id int) error {
 		return err
 	}
 	if len(subcategories) > 0 {
-		return ErrCategoryHasSubcategories
+		return categoryerrors.ErrCategoryHasSubcategories
 	}
 
 	return s.repo.Delete(ctx, id)

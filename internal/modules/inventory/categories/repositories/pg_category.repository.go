@@ -1,11 +1,10 @@
-package postgresql
+package repositories
 
 import (
 	"context"
 	"errors"
 
-	"github.com/hsrvms/fixparts/internal/modules/inventory/models"
-	"github.com/hsrvms/fixparts/internal/modules/inventory/repositories/interfaces"
+	"github.com/hsrvms/fixparts/internal/modules/inventory/categories/models"
 	"github.com/hsrvms/fixparts/pkg/db"
 	"github.com/jackc/pgx/v5"
 )
@@ -16,7 +15,7 @@ type PostgresCategoryRepository struct {
 }
 
 // NewPostgresCategoryRepository creates a new PostgreSQL repository
-func NewPostgresCategoryRepository(database *db.Database) interfaces.CategoryRepository {
+func NewPostgresCategoryRepository(database *db.Database) CategoryRepository {
 	return &PostgresCategoryRepository{
 		db: database,
 	}
