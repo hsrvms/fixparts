@@ -258,209 +258,6 @@ CREATE TRIGGER trigger_update_inventory_on_sale
 AFTER INSERT ON sales
 FOR EACH ROW EXECUTE PROCEDURE update_inventory_on_sale();
 
--- Insert some sample data for categories
-INSERT INTO categories (category_name, description) VALUES
-('Engine Parts', 'Parts related to the engine system'),
-('Brake System', 'Parts related to the braking system'),
-('Suspension', 'Parts related to the suspension system'),
-('Electrical', 'Electrical components and systems'),
-('Body Parts', 'External and structural body components'),
-('Filters', 'All types of filters for vehicles');
-
--- Insert some child categories
-INSERT INTO categories (category_name, description, parent_category_id) VALUES
-('Pistons', 'Engine pistons and related components', 1),
-('Timing Belts', 'Engine timing belts and chains', 1),
-('Brake Pads', 'Friction material for brake systems', 2),
-('Brake Rotors', 'Rotating discs for brake systems', 2),
-('Shock Absorbers', 'Dampers for suspension systems', 3),
-('Spring Coils', 'Suspension springs and coils', 3),
-('Headlights', 'Front lighting systems', 4),
-('Alternators', 'Charging system components', 4),
-('Hood', 'Front cover for engine compartment', 5),
-('Bumpers', 'Front and rear impact protection', 5),
-('Oil Filters', 'Filtration for engine oil', 6),
-('Air Filters', 'Filtration for engine air intake', 6);
-
--- Insert some sample vehicle makes
-INSERT INTO vehicle_makes (make_name, country) VALUES
-('Toyota', 'Japan'),
-('Honda', 'Japan'),
-('Ford', 'USA'),
-('Chevrolet', 'USA'),
-('BMW', 'Germany'),
-('Mercedes-Benz', 'Germany'),
-('Volkswagen', 'Germany'),
-('Hyundai', 'South Korea'),
-('Audi', 'Germany'),
-('Nissan', 'Japan');
-
--- Insert sample vehicle models (parent models)
-INSERT INTO vehicle_models (make_id, model_name) VALUES
-(1, 'Camry'),
-(1, 'Corolla'),
-(2, 'Civic'),
-(2, 'Accord'),
-(3, 'F-150'),
-(3, 'Mustang'),
-(4, 'Silverado'),
-(5, '3 Series'),
-(5, '4 Series'),  -- Adding BMW 4 Series
-(6, 'C-Class'),   -- Adding Mercedes C-Class
-(7, 'Golf'),      -- Adding VW Golf
-(7, 'Passat');    -- Adding VW Passat
-
--- Insert sample vehicle submodels
-INSERT INTO vehicle_submodels (model_id, submodel_name, year_from, year_to, engine_type, engine_displacement, fuel_type, transmission_type, body_type) VALUES
--- Toyota Camry variants
-(1, 'Camry SE', 2018, 2022, 'Inline-4', 2.5, 'Gasoline', 'Automatic', 'Sedan'),
-(1, 'Camry XLE', 2018, 2022, 'Inline-4', 2.5, 'Gasoline', 'Automatic', 'Sedan'),
-(1, 'Camry Hybrid', 2018, 2022, 'Hybrid Inline-4', 2.5, 'Hybrid', 'CVT', 'Sedan'),
-
--- Toyota Corolla variants
-(2, 'Corolla LE', 2019, 2023, 'Inline-4', 1.8, 'Gasoline', 'CVT', 'Sedan'),
-(2, 'Corolla Hatchback', 2019, 2023, 'Inline-4', 2.0, 'Gasoline', 'CVT', 'Hatchback'),
-(2, 'Corolla Hybrid', 2020, 2023, 'Hybrid Inline-4', 1.8, 'Hybrid', 'CVT', 'Sedan'),
-
--- Honda Civic variants
-(3, 'Civic Sedan', 2016, 2021, 'Inline-4', 1.5, 'Gasoline', 'CVT', 'Sedan'),
-(3, 'Civic Hatchback', 2017, 2021, 'Inline-4', 1.5, 'Gasoline', 'Manual', 'Hatchback'),
-(3, 'Civic Type R', 2017, 2021, 'Inline-4 Turbo', 2.0, 'Gasoline', 'Manual', 'Hatchback'),
-
--- Honda Accord variants
-(4, 'Accord Sport', 2018, 2022, 'Inline-4 Turbo', 1.5, 'Gasoline', 'CVT', 'Sedan'),
-(4, 'Accord Touring', 2018, 2022, 'Inline-4 Turbo', 2.0, 'Gasoline', 'Automatic', 'Sedan'),
-(4, 'Accord Hybrid', 2018, 2022, 'Hybrid Inline-4', 2.0, 'Hybrid', 'eCVT', 'Sedan'),
-
--- Ford F-150 variants
-(5, 'F-150 XLT', 2015, 2020, 'V8', 5.0, 'Gasoline', 'Automatic', 'Pickup Truck'),
-(5, 'F-150 Raptor', 2017, 2020, 'V6 Turbo', 3.5, 'Gasoline', 'Automatic', 'Pickup Truck'),
-(5, 'F-150 Lariat', 2015, 2020, 'V6', 3.5, 'Gasoline', 'Automatic', 'Pickup Truck'),
-
--- Ford Mustang variants
-(6, 'Mustang GT', 2018, 2023, 'V8', 5.0, 'Gasoline', 'Manual', 'Coupe'),
-(6, 'Mustang EcoBoost', 2018, 2023, 'Inline-4 Turbo', 2.3, 'Gasoline', 'Automatic', 'Coupe'),
-(6, 'Mustang Convertible', 2018, 2023, 'V8', 5.0, 'Gasoline', 'Automatic', 'Convertible'),
-
--- Chevy Silverado variants
-(7, 'Silverado LT', 2019, 2023, 'V8', 5.3, 'Gasoline', 'Automatic', 'Pickup Truck'),
-(7, 'Silverado Custom', 2019, 2023, 'V6', 4.3, 'Gasoline', 'Automatic', 'Pickup Truck'),
-(7, 'Silverado RST', 2019, 2023, 'V8', 6.2, 'Gasoline', 'Automatic', 'Pickup Truck'),
-
--- BMW 3 Series variants
-(8, '330i', 2019, 2023, 'Inline-4 Turbo', 2.0, 'Gasoline', 'Automatic', 'Sedan'),
-(8, '330i xDrive', 2019, 2023, 'Inline-4 Turbo', 2.0, 'Gasoline', 'Automatic', 'Sedan'),
-(8, 'M340i', 2019, 2023, 'Inline-6 Turbo', 3.0, 'Gasoline', 'Automatic', 'Sedan'),
-
--- BMW 4 Series variants
-(9, '418d', 2014, 2020, 'Inline-4 Diesel', 2.0, 'Diesel', 'Automatic', 'Coupe'),
-(9, '418d Gran Coupe', 2014, 2020, 'Inline-4 Diesel', 2.0, 'Diesel', 'Automatic', 'Gran Coupe'),
-(9, '418i', 2014, 2020, 'Inline-4 Turbo', 2.0, 'Gasoline', 'Automatic', 'Coupe'),
-(9, '418i Gran Coupe', 2014, 2020, 'Inline-4 Turbo', 2.0, 'Gasoline', 'Automatic', 'Gran Coupe'),
-
--- Audi A3 variants (adding these as you specifically mentioned them)
-(10, 'A3 Cabrio', 2016, 2020, 'Inline-4 Turbo', 1.4, 'Gasoline', 'Automatic', 'Convertible'),
-(10, 'A3 Sedan', 2016, 2020, 'Inline-4 Turbo', 1.4, 'Gasoline', 'Automatic', 'Sedan'),
-(10, 'A3 Sportback', 2016, 2020, 'Inline-4 Turbo', 1.4, 'Gasoline', 'Automatic', 'Sportback'),
-(10, 'A3 Hatchback', 2016, 2020, 'Inline-4 Turbo', 1.4, 'Gasoline', 'Manual', 'Hatchback');
-
--- Insert some sample suppliers
-INSERT INTO suppliers (name, contact_person, phone, email, address, tax_id, payment_terms) VALUES
-('Auto Parts Wholesale Inc.', 'John Smith', '555-123-4567', 'john@apw.com', '123 Main St, Anytown, USA', 'APW-12345', 'Net 30'),
-('Quality Parts Supply', 'Jane Doe', '555-234-5678', 'jane@qps.com', '456 Second Ave, Othertown, USA', 'QPS-67890', 'Net 45'),
-('Import Auto Parts', 'Bob Johnson', '555-345-6789', 'bob@importauto.com', '789 Third Blvd, Somewhere, USA', 'IAP-24680', 'COD'),
-('OEM Suppliers Ltd.', 'Mary Wilson', '555-456-7890', 'mary@oemsuppliers.com', '321 Fourth St, Elsewhere, USA', 'OEM-13579', 'Net 60');
-
--- Insert some sample items
-INSERT INTO items (part_number, description, category_id, buy_price, sell_price, current_stock, minimum_stock, barcode, supplier_id, location_aisle, location_shelf, location_bin) VALUES
-('BP-1234', 'Premium Brake Pads - Front', 3, 25.50, 49.99, 45, 10, 'BP1234FRONT', 1, 'A', '1', '3'),
-('BP-1235', 'Premium Brake Pads - Rear', 3, 22.75, 45.99, 38, 10, 'BP1235REAR', 1, 'A', '1', '4'),
-('OF-2345', 'Oil Filter - Standard', 11, 3.25, 8.99, 120, 30, 'OF2345STD', 2, 'B', '3', '1'),
-('AF-3456', 'Air Filter - Performance', 12, 12.50, 24.99, 35, 15, 'AF3456PERF', 3, 'B', '3', '5'),
-('SA-4567', 'Shock Absorber - Front', 5, 45.75, 89.99, 18, 8, 'SA4567FRONT', 4, 'C', '2', '2'),
-('SC-5678', 'Spring Coils - Lowering Kit', 6, 120.00, 249.99, 7, 4, 'SC5678LOWER', 3, 'C', '2', '6'),
-('HL-6789', 'Headlight Assembly - Left', 7, 85.50, 169.99, 12, 6, 'HL6789LEFT', 2, 'D', '1', '1'),
-('HL-6790', 'Headlight Assembly - Right', 7, 85.50, 169.99, 11, 6, 'HL6790RIGHT', 2, 'D', '1', '2'),
-('AL-7890', 'Alternator - 120A', 8, 65.25, 129.99, 9, 5, 'AL7890120A', 1, 'D', '2', '4'),
-('TB-8901', 'Timing Belt Kit', 2, 48.75, 94.99, 22, 8, 'TB8901KIT', 4, 'A', '3', '2');
-
--- Insert some sample compatibility records
-INSERT INTO compatibility (item_id, submodel_id, notes) VALUES
--- Front brake pads
-(1, 1, 'Perfect fit for Camry SE'), -- Brake pads for Toyota Camry SE
-(1, 4, 'Works with minor modification'), -- Brake pads for Toyota Corolla LE
-(1, 7, 'Direct replacement'), -- Brake pads for Honda Civic Sedan
-
--- Rear brake pads
-(2, 1, 'OEM replacement'), -- Rear brake pads for Toyota Camry SE
-(2, 4, 'OEM replacement'), -- Rear brake pads for Toyota Corolla LE
-
--- Oil filters
-(3, 1, 'Standard oil filter'), -- Oil filter for Toyota Camry SE
-(3, 2, 'Standard oil filter'), -- Oil filter for Toyota Camry XLE
-(3, 3, 'Standard oil filter'), -- Oil filter for Toyota Camry Hybrid
-(3, 4, 'Standard oil filter'), -- Oil filter for Toyota Corolla LE
-(3, 7, 'Standard oil filter'), -- Oil filter for Honda Civic Sedan
-(3, 10, 'Standard oil filter'), -- Oil filter for Honda Accord Sport
-
--- Air filters
-(4, 13, 'Performance upgrade'), -- Air filter for Ford F-150 XLT
-(4, 19, 'Performance upgrade'), -- Air filter for Chevy Silverado LT
-
--- Shock absorbers
-(5, 1, 'OEM replacement'), -- Shock absorber for Toyota Camry SE
-(5, 10, 'OEM replacement'), -- Shock absorber for Honda Accord Sport
-
--- Headlights
-(7, 7, 'Direct replacement'), -- Headlight for Honda Civic Sedan
-(8, 7, 'Direct replacement'), -- Right headlight for Honda Civic Sedan
-
--- Alternators
-(9, 13, 'High output replacement'), -- Alternator for Ford F-150 XLT
-(9, 19, 'High output replacement'), -- Alternator for Chevy Silverado LT
-
--- Timing belts
-(10, 1, 'OEM quality replacement'), -- Timing belt for Toyota Camry SE
-(10, 4, 'OEM quality replacement'), -- Timing belt for Toyota Corolla LE
-
--- Additional compatibility for BMW 4 Series
-(3, 25, 'Compatible with all diesel variants'), -- Oil filter for BMW 418d
-(3, 26, 'Compatible with all diesel variants'), -- Oil filter for BMW 418d Gran Coupe
-(3, 27, 'Compatible with all gasoline variants'), -- Oil filter for BMW 418i
-(3, 28, 'Compatible with all gasoline variants'), -- Oil filter for BMW 418i Gran Coupe
-
--- Additional compatibility for Audi A3 variants
-(3, 29, 'Compatible with all engines'), -- Oil filter for Audi A3 Cabrio
-(3, 30, 'Compatible with all engines'), -- Oil filter for Audi A3 Sedan
-(3, 31, 'Compatible with all engines'), -- Oil filter for Audi A3 Sportback
-(3, 32, 'Compatible with all engines'); -- Oil filter for Audi A3 Hatchback
-
--- Insert some purchase records
-INSERT INTO purchases (supplier_id, item_id, quantity, cost_per_unit, total_cost, invoice_number, received_by) VALUES
-(1, 1, 20, 25.50, 510.00, 'INV-2023-001', 'Mike Johnson'),
-(1, 2, 15, 22.75, 341.25, 'INV-2023-001', 'Mike Johnson'),
-(2, 3, 50, 3.25, 162.50, 'INV-2023-002', 'Sarah Williams'),
-(3, 4, 15, 12.50, 187.50, 'INV-2023-003', 'David Brown'),
-(4, 5, 10, 45.75, 457.50, 'INV-2023-004', 'Lisa Davis'),
-(3, 6, 5, 120.00, 600.00, 'INV-2023-005', 'Robert Wilson'),
-(2, 7, 6, 85.50, 513.00, 'INV-2023-006', 'Jennifer Taylor'),
-(2, 8, 6, 85.50, 513.00, 'INV-2023-006', 'Jennifer Taylor'),
-(1, 9, 4, 65.25, 261.00, 'INV-2023-007', 'Michael Moore'),
-(4, 10, 12, 48.75, 585.00, 'INV-2023-008', 'Patricia Martin');
-
--- Insert some sales records
-INSERT INTO sales (item_id, quantity, price_per_unit, total_price, transaction_number, customer_name, customer_phone, sold_by) VALUES
-(1, 2, 49.99, 99.98, 'TRX-2023-001', 'James Wilson', '555-111-2222', 'Tom Baker'),
-(3, 1, 8.99, 8.99, 'TRX-2023-002', 'Maria Garcia', '555-222-3333', 'Tom Baker'),
-(4, 1, 24.99, 24.99, 'TRX-2023-002', 'Maria Garcia', '555-222-3333', 'Tom Baker'),
-(7, 1, 169.99, 169.99, 'TRX-2023-003', 'Robert Johnson', '555-333-4444', 'Alice Cooper'),
-(8, 1, 169.99, 169.99, 'TRX-2023-003', 'Robert Johnson', '555-333-4444', 'Alice Cooper'),
-(2, 1, 45.99, 45.99, 'TRX-2023-004', 'Susan Miller', '555-444-5555', 'Tom Baker'),
-(5, 2, 89.99, 179.98, 'TRX-2023-005', 'David Thompson', '555-555-6666', 'Alice Cooper'),
-(10, 1, 94.99, 94.99, 'TRX-2023-006', 'Linda Martinez', '555-666-7777', 'Tom Baker'),
-(3, 3, 8.99, 26.97, 'TRX-2023-007', 'Michael Brown', '555-777-8888', 'Alice Cooper'),
-(6, 1, 249.99, 249.99, 'TRX-2023-008', 'Jennifer Davis', '555-888-9999', 'Tom Baker');
-
 -- Create view for low stock alerts
 CREATE OR REPLACE VIEW low_stock_items AS
 SELECT
@@ -566,7 +363,7 @@ RETURNS TABLE (
     sell_price DECIMAL,
     current_stock INTEGER,
     barcode VARCHAR
-) AS $
+) AS $$
 BEGIN
     RETURN QUERY
     SELECT
@@ -598,7 +395,7 @@ BEGIN
     ORDER BY
         c.category_name, i.part_number;
 END;
-$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- Create function to get all compatible parts for a model (across all submodels)
 CREATE OR REPLACE FUNCTION get_model_compatible_parts(make_name TEXT, model_name TEXT)
@@ -610,7 +407,7 @@ RETURNS TABLE (
     sell_price DECIMAL,
     current_stock INTEGER,
     compatible_submodels TEXT
-) AS $
+) AS $$
 BEGIN
     RETURN QUERY
     SELECT
@@ -641,7 +438,7 @@ BEGIN
     ORDER BY
         c.category_name, i.part_number;
 END;
-$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- Function to get category prefix
 CREATE OR REPLACE FUNCTION get_category_prefix(category_id INTEGER)
