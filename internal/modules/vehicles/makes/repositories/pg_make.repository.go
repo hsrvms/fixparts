@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/hsrvms/fixparts/internal/modules/vehicles/makes/models"
+	vehicleModelModels "github.com/hsrvms/fixparts/internal/modules/vehicles/models/models"
 	"github.com/hsrvms/fixparts/pkg/db"
 	"github.com/jackc/pgx/v5"
 )
@@ -125,4 +126,40 @@ func (r *PostgresVehicleMakeRepository) DeleteMake(ctx context.Context, id int) 
 	}
 
 	return nil
+}
+
+func (r *PostgresVehicleMakeRepository) GetModelsByMake(ctx context.Context, makeID int) ([]*vehicleModelModels.VehicleModel, error) {
+	query := `
+		SELECT m.model_id, m.make_id, m.model_name, m.created_at, m.updated_at,
+			   mk.make_name
+		FROM vehicle_models m
+		JOIN vehicle_makes mk ON m.make_id = mk.make_id
+		WHERE m.make_id = $1
+		ORDER BY m.model_name
+	`
+
+	rows, err := r.db.Pool.Query(ctx, query, makeID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var models []*vehicleModelModels.VehicleModel
+	for rows.Next() {
+		model := &vehicleModelModels.VehicleModel{}
+		err := rows.Scan(
+			&model.ModelID,
+			&model.MakeID,
+			&model.ModelName,
+			&model.CreatedAt,
+			&model.UpdatedAt,
+			&model.MakeName,
+		)
+		if err != nil {
+			return nil, err
+		}
+		models = append(models, model)
+	}
+
+	return models, rows.Err()
 }

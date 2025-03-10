@@ -1,4 +1,4 @@
-package repositories
+package services
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	vehicleModelModels "github.com/hsrvms/fixparts/internal/modules/vehicles/models/models"
 )
 
-type VehicleMakeRepository interface {
+type VehicleMakeService interface {
 	GetAllMakes(ctx context.Context) ([]*models.VehicleMake, error)
 	GetMakeByID(ctx context.Context, id int) (*models.VehicleMake, error)
 	CreateMake(ctx context.Context, make *models.VehicleMake) (int, error)
