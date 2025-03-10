@@ -9,16 +9,10 @@ import (
 )
 
 func RegisterRoutes(api *echo.Group, database *db.Database) {
-	// Initialize repository
 	repo := repositories.NewPostgresSupplierRepository(database)
-
-	// Initialize service
 	service := services.NewSupplierService(repo)
-
-	// Initialize handler
 	handler := handlers.NewSupplierHandler(service)
 
-	// Register routes
 	suppliers := api.Group("/suppliers")
 	suppliers.GET("", handler.GetSuppliers)
 	suppliers.GET("/:id", handler.GetSupplierByID)
