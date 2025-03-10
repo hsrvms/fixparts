@@ -5,6 +5,7 @@ import (
 
 	"github.com/hsrvms/fixparts/internal/modules/dashboard"
 	"github.com/hsrvms/fixparts/internal/modules/inventory"
+	"github.com/hsrvms/fixparts/internal/modules/suppliers"
 	"github.com/hsrvms/fixparts/internal/modules/vehicles"
 	"github.com/labstack/echo/v4"
 )
@@ -19,5 +20,6 @@ func (s *Server) initRoutes() {
 	dashboard.RegisterRoutes(s.Echo, api, s.DB)
 	inventory.RegisterRoutes(s.Echo, api, s.DB)
 	vehicles.RegisterRoutes(s.Echo, api, s.DB)
+	suppliers.RegisterRoutes(api, s.DB)
 
 }
